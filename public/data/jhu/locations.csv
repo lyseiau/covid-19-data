@@ -47,7 +47,8 @@ Mongolia,Mongolia,Asia,2020,3278292
 Maldives,Maldives,Asia,2020,540542
 Latvia,Latvia,Europe,2020,1886202
 Saint Lucia,Saint Lucia,North America,2020,183629
-San Marino,San Marino,Europe,2020,33938
+Samoa,Samoa,Oceania,2020,198410
+Thailand,Thailand,Asia,2020,69799978
 Timor-Leste,Timor,Asia,2020,1318442
 Togo,Togo,Africa,2020,8278737
 Trinidad and Tobago,Trinidad and Tobago,North America,2020,1399491
@@ -56,22 +57,22 @@ Turkey,Turkey,Asia,2020,84339067
 US,United States,North America,2020,331002647
 Uganda,Uganda,Africa,2020,45741000
 Ukraine,Ukraine,Europe,2020,43733759
+Tanzania,Tanzania,Africa,2020,59734213
 United Arab Emirates,United Arab Emirates,Asia,2020,9890400
-Thailand,Thailand,Asia,2020,69799978
-United Kingdom,United Kingdom,Europe,2020,67886004
+Uruguay,Uruguay,South America,2020,3473727
 Uzbekistan,Uzbekistan,Asia,2020,33469199
 Vanuatu,Vanuatu,Oceania,2020,307150
 Venezuela,Venezuela,South America,2020,28435943
 Vietnam,Vietnam,Asia,2020,97338583
 West Bank and Gaza,Palestine,Asia,2020,5101416
-Western Sahara,Western Sahara,Africa,2020,597330
 Yemen,Yemen,Asia,2020,29825968
 Zambia,Zambia,Africa,2020,18383956
 Zimbabwe,Zimbabwe,Africa,2020,14862927
-Uruguay,Uruguay,South America,2020,3473727
+United Kingdom,United Kingdom,Europe,2020,67886004
 Saint Vincent and the Grenadines,Saint Vincent and the Grenadines,North America,2020,110947
-Tanzania,Tanzania,Africa,2020,59734213
-Taiwan*,Taiwan,Asia,2020,23816775
+Tajikistan,Tajikistan,Asia,2020,9537642
+Syria,Syria,Asia,2020,17500657
+San Marino,San Marino,Europe,2020,33938
 Sao Tome and Principe,Sao Tome and Principe,Africa,2020,219161
 Saudi Arabia,Saudi Arabia,Asia,2020,34813867
 Senegal,Senegal,Africa,2020,16743930
@@ -80,9 +81,9 @@ Seychelles,Seychelles,Africa,2020,98340
 Sierra Leone,Sierra Leone,Africa,2020,7976985
 Singapore,Singapore,Asia,2020,5850343
 Slovakia,Slovakia,Europe,2020,5459643
+Taiwan*,Taiwan,Asia,2020,23816775
 Slovenia,Slovenia,Europe,2020,2078932
-Tajikistan,Tajikistan,Asia,2020,9537642
-Solomon Islands,Solomon Islands,Oceania,2020,686878
+Somalia,Somalia,Africa,2020,15893219
 South Africa,South Africa,Africa,2020,59308690
 South Sudan,South Sudan,Africa,2020,11193729
 Spain,Spain,Europe,2020,46754783
@@ -91,8 +92,7 @@ Sudan,Sudan,Africa,2020,43849269
 Suriname,Suriname,South America,2020,586634
 Sweden,Sweden,Europe,2020,10099270
 Switzerland,Switzerland,Europe,2020,8654618
-Syria,Syria,Asia,2020,17500657
-Somalia,Somalia,Africa,2020,15893219
+Solomon Islands,Solomon Islands,Oceania,2020,686878
 Laos,Laos,Asia,2020,7275556
 Saint Kitts and Nevis,Saint Kitts and Nevis,North America,2020,53192
 Kuwait,Kuwait,Asia,2020,4270563
