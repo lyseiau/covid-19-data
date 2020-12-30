@@ -117,6 +117,9 @@ improve_metadata <- function(metadata, vax) {
 }
 
 generate_locations_file <- function(metadata) {
+    iso_codes <- fread("../../input/iso/iso3166_1_alpha_3_codes.csv")
+    metadata <- merge(iso_codes, metadata, by = "location", all.y = TRUE)
+    metadata <- metadata[, c("location", "iso_code", "source_name", "source_website", "vaccines", "last_observation_date")]
     fwrite(metadata, "../../../public/data/vaccinations/locations.csv")
 }
 
@@ -128,7 +131,7 @@ generate_grapher_file <- function(grapher) {
     setnames(grapher, c("date", "location"), c("year", "country"))
     setcolorder(grapher, c("country", "year"))
     grapher[, year := as.integer(year - ymd("2020-01-21"))]
-    fwrite(grapher, "../../../public/data/vaccinations/COVID-19 - Vaccinations.csv", scipen = 999)
+    fwrite(grapher, "../../grapher/COVID-19 - Vaccinations.csv", scipen = 999)
 }
 
 generate_html <- function(metadata) {
@@ -169,6 +172,6 @@ generate_grapher_file(copy(vax))
 generate_locations_file(metadata)
 generate_html(metadata)
 
-upper_choices <- c(3, 4, 5, 10, 15, 20, 25, 30, 40, 50, 70, 75, 80, 90, 100)
+upper_choices <- c(5, 10, 15, 20, 25, 30, 40, 50, 70, 75, 80, 90, 100)
 message(sprintf("---\nPer capita upper bound: %s",
                 upper_choices[which.min(abs(max(vax$total_vaccinations_per_hundred) - upper_choices))]))
