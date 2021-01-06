@@ -8,7 +8,9 @@ Finland,TRUE
 Germany,TRUE
 Greece,TRUE
 Italy,TRUE
+Latvia,TRUE
 Northern Ireland,TRUE
+Norway,TRUE
 Romania,TRUE
 Scotland,TRUE
 Slovenia,TRUE
@@ -24,6 +26,7 @@ Chile,FALSE
 China,FALSE
 Costa Rica,FALSE
 Croatia,FALSE
+Cyprus,FALSE
 Czechia,FALSE
 France,FALSE
 Hungary,FALSE
@@ -31,15 +34,14 @@ Iceland,FALSE
 Ireland,FALSE
 Israel,FALSE
 Kuwait,FALSE
-Latvia,FALSE
 Lithuania,FALSE
 Luxembourg,FALSE
 Malta,FALSE
 Mexico,FALSE
-Norway,FALSE
 Oman,FALSE
 Poland,FALSE
 Portugal,FALSE
 Russia,FALSE
+Saudi Arabia,FALSE
 Slovakia,FALSE
 United Arab Emirates,FALSE
