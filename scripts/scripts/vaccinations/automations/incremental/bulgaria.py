@@ -14,18 +14,19 @@ def main():
 
     table = soup.find("p", string=re.compile("Ваксинирани лица по")).parent.find("table")
     df = pd.read_html(str(table))[0]
+    df = df.droplevel(level=0, axis=1)
 
     count = df.loc[df["Област"] == "Общо", "Общо"].values[0]
     count = int(count)
 
-    date = str(datetime.datetime.now(pytz.timezone("Europe/Sofia")).date())
+    date = str(datetime.datetime.now(pytz.timezone("Europe/Sofia")).date() - datetime.timedelta(days=1))
 
     vaxutils.increment(
         location="Bulgaria",
         total_vaccinations=count,
         date=date,
         source_url=url,
-        vaccine="Pfizer/BioNTech"
+        vaccine="Moderna, Pfizer/BioNTech"
     )
 
 

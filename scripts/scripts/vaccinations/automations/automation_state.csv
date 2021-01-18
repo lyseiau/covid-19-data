@@ -1,13 +1,17 @@
 location,automated
+Austria,TRUE
 Bulgaria,TRUE
 Canada,TRUE
+Chile,TRUE
 Czechia,TRUE
 Denmark,TRUE
 England,TRUE
 Estonia,TRUE
 Finland,TRUE
+France,TRUE
 Germany,TRUE
 Greece,TRUE
+Ireland,TRUE
 Israel,TRUE
 Italy,TRUE
 Latvia,TRUE
@@ -15,37 +19,39 @@ Lithuania,TRUE
 Netherlands,TRUE
 Northern Ireland,TRUE
 Norway,TRUE
+Poland,TRUE
+Portugal,TRUE
 Romania,TRUE
+Saudi Arabia,TRUE
 Scotland,TRUE
 Slovakia,TRUE
 Slovenia,TRUE
 Spain,TRUE
-United Arab Emirates,TRUE
+Sweden,TRUE
+Turkey,TRUE
 United Kingdom,TRUE
 United States,TRUE
 Wales,TRUE
 Argentina,FALSE
-Austria,FALSE
 Bahrain,FALSE
 Belgium,FALSE
-Chile,FALSE
+Brazil,FALSE
 China,FALSE
 Costa Rica,FALSE
 Croatia,FALSE
 Cyprus,FALSE
-France,FALSE
+Gibraltar,FALSE
 Guinea,FALSE
 Hungary,FALSE
 Iceland,FALSE
-Ireland,FALSE
+India,FALSE
 Kuwait,FALSE
 Luxembourg,FALSE
 Malta,FALSE
 Mexico,FALSE
 Oman,FALSE
-Poland,FALSE
-Portugal,FALSE
 Russia,FALSE
-Saudi Arabia,FALSE
 Serbia,FALSE
-Sweden,FALSE
+Singapore,FALSE
+Switzerland,FALSE
+United Arab Emirates,FALSE
