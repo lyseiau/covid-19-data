@@ -52,6 +52,15 @@ add_aggregate <- function(vax, aggregate_name, included_locs, excluded_locs) {
 
     setorder(agg, location, date)
 
+    for (loc in unique(agg$location)) {
+        if (all(is.na(agg[location == loc, people_vaccinated]))) {
+            agg[location == loc, people_vaccinated := 0]
+        }
+        if (all(is.na(agg[location == loc, people_fully_vaccinated]))) {
+            agg[location == loc, people_fully_vaccinated := 0]
+        }
+    }
+
     agg[, total_vaccinations := na_locf(total_vaccinations, na_remaining = "keep"), location]
     agg[, people_vaccinated := na_locf(people_vaccinated, na_remaining = "keep"), location]
     agg[, people_fully_vaccinated := na_locf(people_fully_vaccinated, na_remaining = "keep"), location]
@@ -69,7 +78,6 @@ add_aggregate <- function(vax, aggregate_name, included_locs, excluded_locs) {
 }
 
 add_daily <- function(df) {
-    if (df$location[1] %in% names(AGGREGATES)) return(df)
     setorder(df, date)
     df$new_vaccinations <- df$total_vaccinations - shift(df$total_vaccinations, 1)
     df[date != shift(date, 1) + 1, new_vaccinations := NA]
@@ -77,7 +85,6 @@ add_daily <- function(df) {
 }
 
 add_smoothed <- function(df) {
-    if (df$location[1] %in% names(AGGREGATES)) return(df)
     setorder(df, date)
     date_seq <- seq.Date(from = min(df$date), to = max(df$date), by = "day")
     time_series <- data.table(date = date_seq, location = df$location[1])
@@ -112,15 +119,11 @@ process_location <- function(location_name) {
     stopifnot(length(unique(df$date)) == nrow(df))
     stopifnot(max(df$date) <= today())
 
-    if (!"people_vaccinated" %in% names(df)) {
-        df[, people_vaccinated := total_vaccinations]
-    }
+    # Morning updates: exclude current day data to avoid incompleteness
+    if (hour(now(tzone = "CET")) < 12) df <- df[date < today()]
 
-    if (!"people_fully_vaccinated" %in% names(df)) {
-        df[, people_fully_vaccinated := 0]
-    } else {
-        df[, people_fully_vaccinated := nafill(as.integer(people_fully_vaccinated), fill = 0)]
-    }
+    if (!"people_vaccinated" %in% names(df)) df[, people_vaccinated := NA_integer_]
+    if (!"people_fully_vaccinated" %in% names(df)) df[, people_fully_vaccinated := NA_integer_]
 
     df <- df[, c("location", "date", "vaccine", "source_url", "total_vaccinations", "people_vaccinated", "people_fully_vaccinated")]
 
@@ -229,9 +232,11 @@ vax <- vax[, .(
 
 # Add regional aggregates
 for (agg_name in names(AGGREGATES)) {
-    vax <- add_aggregate(vax, aggregate_name = agg_name,
-                         included_locs = AGGREGATES[[agg_name]][["included_locs"]],
-                         excluded_locs = AGGREGATES[[agg_name]][["excluded_locs"]])
+    vax <- add_aggregate(
+        vax, aggregate_name = agg_name,
+        included_locs = AGGREGATES[[agg_name]][["included_locs"]],
+        excluded_locs = AGGREGATES[[agg_name]][["excluded_locs"]]
+    )
 }
 
 # Derived variables

@@ -1,32 +1,25 @@
-import re
+import json
 import requests
-from bs4 import BeautifulSoup
-import dateparser
 import pandas as pd
 import vaxutils
 
 
 def main():
 
-    url = "https://www.rivm.nl/covid-19-vaccinatie/cijfers-vaccinatieprogramma"
-    soup = BeautifulSoup(requests.get(url).content, "html.parser")
+    url = "https://coronadashboard.government.nl/_next/data/5jBzTJhaZyTn2juMr4Cna/index.json"
+    data = json.loads(requests.get(url).content)
 
-    table = soup.find(id="main-content").parent.find("table")
-    df = pd.read_html(str(table), thousands=".")[0]
+    total_vaccinations = int(data["pageProps"]["text"]["vaccinaties"]["data"]["kpi_total"]["value"])
 
-    total_vaccinations = df.loc[df["Doelgroep"] == "Totaal", "Aantal personen bij wie de vaccinatie gestart is"].values[0]
-    total_vaccinations = int(total_vaccinations)
-
-    date = soup.find(string=re.compile("Vaccinatiecijfers.*202\\d"))
-    date = re.search(r"\d+\s\w+\s+202\d", date).group(0)
-    date = str(dateparser.parse(date, languages=["nl"]).date())
+    date = data["pageProps"]["text"]["vaccinaties"]["data"]["kpi_total"]["date_of_report_unix"]
+    date = str(pd.to_datetime(date, unit="s").date())
 
     vaxutils.increment(
         location="Netherlands",
         total_vaccinations=total_vaccinations,
         date=date,
-        source_url=url,
-        vaccine="Pfizer/BioNTech"
+        source_url="https://coronadashboard.rijksoverheid.nl/landelijk/vaccinaties",
+        vaccine="Moderna, Pfizer/BioNTech"
     )
 
 

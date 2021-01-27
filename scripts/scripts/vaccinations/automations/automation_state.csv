@@ -1,7 +1,6 @@
 location,automated
 Argentina,TRUE
 Austria,TRUE
-Belgium,TRUE
 Brazil,TRUE
 Bulgaria,TRUE
 Canada,TRUE
@@ -16,7 +15,9 @@ Germany,TRUE
 Greece,TRUE
 Iceland,TRUE
 India,TRUE
+Indonesia,TRUE
 Ireland,TRUE
+Isle of Man,TRUE
 Israel,TRUE
 Italy,TRUE
 Latvia,TRUE
@@ -40,16 +41,22 @@ United Kingdom,TRUE
 United States,TRUE
 Wales,TRUE
 Bahrain,FALSE
+Belgium,FALSE
+Bermuda,FALSE
 China,FALSE
 Costa Rica,FALSE
 Croatia,FALSE
 Cyprus,FALSE
+Ecuador,FALSE
 Gibraltar,FALSE
 Hungary,FALSE
 Kuwait,FALSE
 Malta,FALSE
 Mexico,FALSE
+Myanmar,FALSE
+Northern Cyprus,FALSE
 Oman,FALSE
+Panama,FALSE
 Russia,FALSE
 Serbia,FALSE
 Seychelles,FALSE

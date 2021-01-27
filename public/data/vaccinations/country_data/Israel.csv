@@ -1,35 +1,41 @@
 location,date,vaccine,source_url,total_vaccinations,people_vaccinated,people_fully_vaccinated
-Israel,2020-12-19,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,56,56,0
-Israel,2020-12-20,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,6739,6739,0
-Israel,2020-12-21,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,29322,29322,0
-Israel,2020-12-22,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,70167,70167,0
-Israel,2020-12-23,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,129018,129018,0
-Israel,2020-12-24,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,199260,199260,0
-Israel,2020-12-25,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,236906,236906,0
-Israel,2020-12-26,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,268871,268871,0
-Israel,2020-12-27,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,369424,369424,0
-Israel,2020-12-28,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,498088,498088,0
-Israel,2020-12-29,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,648851,648851,0
-Israel,2020-12-30,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,797465,797465,0
-Israel,2020-12-31,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,951586,951586,0
-Israel,2021-01-01,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1021703,1021703,0
-Israel,2021-01-02,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1092217,1092217,0
-Israel,2021-01-03,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1237009,1237009,0
-Israel,2021-01-04,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1375824,1375822,2
-Israel,2021-01-05,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1498153,1498151,2
-Israel,2021-01-06,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1598467,1598465,2
-Israel,2021-01-07,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1711720,1711714,6
-Israel,2021-01-08,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1776886,1776875,11
-Israel,2021-01-09,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1820735,1820698,37
-Israel,2021-01-10,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1863482,1857907,5575
-Israel,2021-01-11,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1902675,1879784,22891
-Israel,2021-01-12,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1961037,1906409,54628
-Israel,2021-01-13,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2067581,1960330,107251
-Israel,2021-01-14,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2190396,2017777,172619
-Israel,2021-01-15,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2255857,2048199,207658
-Israel,2021-01-16,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2310452,2077369,233083
-Israel,2021-01-17,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2460368,2146115,314253
-Israel,2021-01-18,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2646275,2218756,427519
-Israel,2021-01-19,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,2852460,2293687,558773
-Israel,2021-01-20,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,3065859,2369992,695867
-Israel,2021-01-21,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,3208198,2407060,801138
+Israel,2020-12-19,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,57,57,
+Israel,2020-12-20,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,7359,7359,
+Israel,2020-12-21,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,32085,32085,
+Israel,2020-12-22,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,76250,76250,
+Israel,2020-12-23,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,137762,137762,
+Israel,2020-12-24,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,209705,209705,
+Israel,2020-12-25,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,247390,247390,
+Israel,2020-12-26,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,279362,279362,
+Israel,2020-12-27,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,381920,381920,
+Israel,2020-12-28,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,513760,513760,
+Israel,2020-12-29,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,667162,667162,
+Israel,2020-12-30,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,816654,816654,
+Israel,2020-12-31,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,971786,971786,
+Israel,2021-01-01,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1042152,1042152,
+Israel,2021-01-02,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1112908,1112908,
+Israel,2021-01-03,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1258471,1258471,
+Israel,2021-01-04,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1397768,1397766,2
+Israel,2021-01-05,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1520408,1520406,2
+Israel,2021-01-06,Pfizer/BioNTech,https://datadashboard.health.gov.il/COVID-19/general,1620887,1620885,2
+Israel,2021-01-07,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1734151,1734145,6
+Israel,2021-01-08,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1799326,1799315,11
+Israel,2021-01-09,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1843180,1843143,37
+Israel,2021-01-10,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1885935,1879946,5989
+Israel,2021-01-11,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1925247,1900217,25030
+Israel,2021-01-12,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,1983775,1923662,60113
+Israel,2021-01-13,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2090362,1974802,115560
+Israel,2021-01-14,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2213239,2030453,182786
+Israel,2021-01-15,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2278724,2060864,217860
+Israel,2021-01-16,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2333326,2090019,243307
+Israel,2021-01-17,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2483548,2157804,325744
+Israel,2021-01-18,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2669912,2227447,442465
+Israel,2021-01-19,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,2876777,2300195,576582
+Israel,2021-01-20,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3093018,2377582,715436
+Israel,2021-01-21,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3322366,2448875,873491
+Israel,2021-01-22,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3430292,2487741,942551
+Israel,2021-01-23,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3523077,2528366,994711
+Israel,2021-01-24,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3729307,2599579,1129728
+Israel,2021-01-25,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,3946585,2688025,1258560
+Israel,2021-01-26,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,4146413,2768462,1377951
+Israel,2021-01-27,"Moderna, Pfizer/BioNTech",https://datadashboard.health.gov.il/COVID-19/general,4252868,2804041,1448827
