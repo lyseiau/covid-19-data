@@ -4,19 +4,23 @@ import vaxutils
 
 def main():
 
-    url = "https://www.data.gouv.fr/fr/datasets/r/b234a041-b5ea-4954-889b-67e64a25ce0d"
-    df = pd.read_csv(url, usecols=["date", "total_vaccines"], sep=";")
+    url = "https://www.data.gouv.fr/fr/datasets/r/131c6b39-51b5-40a7-beaa-0eafc4b88466"
+    df = pd.read_csv(url, sep=",")
+    assert df.shape[1] == 4
+    assert df.shape[0] == 1
 
-    df = df.sort_values("date")
-
-    count = int(df["total_vaccines"].values[-1])
-    date = df["date"].values[-1]
+    people_vaccinated = int(df["n_tot_dose1"].values[0])
+    people_fully_vaccinated = int(df["n_tot_dose2"].values[0])
+    total_vaccinations = people_vaccinated + people_fully_vaccinated
+    date = df["jour"].values[0]
 
     vaxutils.increment(
         location="France",
-        total_vaccinations=count,
+        total_vaccinations=total_vaccinations,
+        people_vaccinated=people_vaccinated,
+        people_fully_vaccinated=people_fully_vaccinated,
         date=date,
-        source_url="https://www.data.gouv.fr/fr/datasets/donnees-relatives-aux-personnes-vaccinees-contre-la-covid-19/",
+        source_url="https://www.data.gouv.fr/fr/datasets/donnees-relatives-aux-personnes-vaccinees-contre-la-covid-19-1/",
         vaccine="Pfizer/BioNTech"
     )
 

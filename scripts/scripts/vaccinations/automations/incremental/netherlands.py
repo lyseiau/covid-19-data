@@ -6,8 +6,10 @@ import vaxutils
 
 def main():
 
-    url = "https://coronadashboard.government.nl/_next/data/5jBzTJhaZyTn2juMr4Cna/index.json"
+    url = "https://coronadashboard.government.nl/_next/data/cs_HykNUpz70XEV85dq0b/landelijk/vaccinaties.json"
     data = json.loads(requests.get(url).content)
+
+    assert data["pageProps"]["text"]["vaccinaties"]["data"]["kpi_total"]["title"] == "Number of doses administered"
 
     total_vaccinations = int(data["pageProps"]["text"]["vaccinaties"]["data"]["kpi_total"]["value"])
 
