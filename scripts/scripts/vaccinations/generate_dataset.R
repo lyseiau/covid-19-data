@@ -7,10 +7,12 @@ library(retry)
 library(rjson)
 library(stringr)
 library(tidyr)
+library(jsonlite)
 rm(list = ls())
 
 setwd(dirname(rstudioapi::getSourceEditorContext()$path))
-CONFIG <- fromJSON(file = "vax_dataset_config.json")
+system("git pull")
+CONFIG <- rjson::fromJSON(file = "vax_dataset_config.json")
 Sys.setlocale("LC_TIME", "en_US")
 gs4_auth(email = CONFIG$google_credentials_email)
 GSHEET_KEY <- CONFIG$vax_time_series_gsheet
@@ -107,6 +109,7 @@ process_location <- function(location_name) {
     if (is_automated) {
         filepath <- sprintf("automations/output/%s.csv", location_name)
         df <- data.table(suppressMessages(read_csv(filepath)))
+        stopifnot(all(names(df) %in% c("location", "source_url", "vaccine", "date", "total_vaccinations", "people_vaccinated", "people_fully_vaccinated")))
     } else {
         retry(
             expr = {df <- suppressMessages(read_sheet(GSHEET_KEY, sheet = location_name))},
@@ -122,8 +125,8 @@ process_location <- function(location_name) {
     stopifnot(max(df$date) <= today())
     stopifnot(min(df$date) >= "2020-12-01")
 
-    # Early updates: exclude current day data to avoid incompleteness
-    if (hour(now(tzone = "CET")) < 16) df <- df[date < today()]
+    # Only report up to previous day to avoid partial reporting
+    df <- df[date < today()]
 
     # Default columns for second doses
     if (!"people_vaccinated" %in% names(df)) df[, people_vaccinated := NA_integer_]
@@ -141,13 +144,14 @@ process_location <- function(location_name) {
 
 get_population <- function(subnational_pop) {
     pop <- fread("../../input/un/population_2020.csv", select = c("entity", "population"), col.names = c("location", "population"))
-    eu_pop <- data.table(location = "European Union", population = pop[location %in% fread("../../input/owid/eu_countries.csv")$Country, sum(population)])
-    pop <- rbindlist(list(pop, subnational_pop, eu_pop))
+    pop <- rbindlist(list(pop, subnational_pop))
 
     # Add up population of French oversea territories, which are reported as part of France
-    pop[location %in% c(
-        "Guadeloupe", "Martinique", "French Guiana", "Mayotte", "Reunion", "French Polynesia", "Saint Martin (French part)"
-    ), location := "France"]
+    pop[location %in% c("Guadeloupe", "Martinique", "French Guiana", "Mayotte", "Reunion", "French Polynesia", "Saint Martin (French part)"), location := "France"]
+    pop <- pop[, .(population = sum(population)), location]
+
+    # Add up population of US territories, which are reported as part of the US
+    pop[location %in% c("American Samoa", "Micronesia (country)", "Guam", "Marshall Islands", "Northern Mariana Islands", "Puerto Rico", "Palau", "United States Virgin Islands"), location := "United States"]
     pop <- pop[, .(population = sum(population)), location]
 
     return(pop)
@@ -195,6 +199,7 @@ generate_vaccinations_file <- function(vax) {
     setnames(vax, c("new_vaccinations_smoothed", "new_vaccinations_smoothed_per_million", "new_vaccinations"),
              c("daily_vaccinations", "daily_vaccinations_per_million", "daily_vaccinations_raw"))
     fwrite(vax, "../../../public/data/vaccinations/vaccinations.csv", scipen = 999)
+    generate_vaccination_json_file(copy(vax))
 }
 
 generate_grapher_file <- function(grapher) {
@@ -207,7 +212,7 @@ generate_grapher_file <- function(grapher) {
 generate_html <- function(metadata) {
     html <- copy(metadata)
     html[, location := paste0("<tr><td><strong>", location, "</strong></td>")]
-    html[, last_observation_date := paste0("<td>", str_squish(format.Date(last_observation_date, "%B %e, %Y")), "</td>")]
+    html[, last_observation_date := paste0("<td>", str_squish(format.Date(last_observation_date, "%b. %e, %Y")), "</td>")]
     html[, vaccines := paste0("<td>", vaccines, "</td></tr>")]
     html[, source := paste0('<td><a href="', source_website, '">', source_name, '</a></td>')]
     html <- html[, c("location", "source", "last_observation_date", "vaccines")]
@@ -218,6 +223,54 @@ generate_html <- function(metadata) {
     html_table <- paste0("<table><tbody>", header, body, "</tbody></table>")
     writeLines(html_table, "automations/source_table.html")
 }
+
+
+generate_vaccination_json_file <- function(vax) {
+    #' Generate JSON dataset
+    vax_json <- jsonify_vax_data(vax)
+    write(vax_json, "../../../public/data/vaccinations/vaccinations.json")
+}
+
+jsonify_vax_data <- function(vax) {
+    #' Given data frame, jsonify it, i.e. suitable for API.
+    #' More details, see https://github.com/owid/covid-19-data/issues/500
+    countries <- get_list_countries_and_iso(vax)
+    vax_json <- list()
+    for (i in seq(nrow(countries))) {
+        location <- countries[i, location]
+        location_iso  <- countries[i, iso_code]
+        vax_json[[i]] <- get_country_as_dix(
+            vax, location = location, location_iso = location_iso
+        )
+    }
+    # JSON format
+    vax_json <- jsonlite::toJSON(vax_json, pretty = TRUE, auto_unbox = TRUE)
+    return(vax_json)
+}
+
+
+get_list_countries_and_iso <- function(vax) {
+    #' Get list of countries and iso codes (discard empty/NA codes)
+    countries <- unique(vax[, c("location", "iso_code")])
+    countries <- countries[!(is.na(countries$iso_code) | countries$iso_code %in% c(""))]
+    return(countries)
+}
+
+
+get_country_as_dix <- function(vax, location, location_iso) {
+    #' Get country data as a dictionary, API-friendly
+    vax_country <- vax[iso_code == location_iso & location == location]
+    country_data <- list(
+        "country" = location,
+        "iso_code" = location_iso
+    )
+    # Get data field (list, each element refers to one date)
+    data <- vax_country[, -c("location", "iso_code")]
+    setorder(data, date)
+    country_data$data <- data
+    return(country_data)
+}
+
 
 metadata <- get_metadata()
 vax <- lapply(metadata$location, FUN = process_location)
@@ -253,9 +306,11 @@ vax[is.na(people_fully_vaccinated), people_fully_vaccinated_per_hundred := NA]
 # Sanity checks
 stopifnot(all(vax$total_vaccinations >= 0, na.rm = TRUE))
 stopifnot(all(vax$new_vaccinations_smoothed >= 0, na.rm = TRUE))
-stopifnot(all(vax$new_vaccinations_smoothed_per_million <= 50000, na.rm = TRUE))
+stopifnot(all(vax$new_vaccinations_smoothed_per_million <= 100000, na.rm = TRUE))
 
 setorder(vax, location, date)
 generate_vaccinations_file(copy(vax))
 generate_grapher_file(copy(vax))
 generate_html(metadata)
+
+source("generate_dataset_by_manufacturer.R")

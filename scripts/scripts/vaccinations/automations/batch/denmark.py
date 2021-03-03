@@ -1,60 +1,85 @@
-import tabula
+import requests
+
 import pandas as pd
-from bs4 import BeautifulSoup
-import urllib.request
+
+
+def read(source: str) -> str:
+    data = requests.get(source).json()
+    return pd.DataFrame.from_records(elem["attributes"] for elem in data["features"])
+
+
+def rename_columns(input: pd.DataFrame, colname: str) -> pd.DataFrame:
+    input.columns = ("date", colname)
+    return input
+
+
+def format_date(input: pd.DataFrame) -> pd.DataFrame:
+    return input.assign(date=pd.to_datetime(input.date, unit="ms"))
+
+
+def aggregate(input: pd.DataFrame) -> pd.DataFrame:
+    return (
+        input
+        .groupby("date")
+        .sum()
+        .sort_values("date")
+        .cumsum()
+        .reset_index()
+    )
+
+
+def enrich_vaccinations(input: pd.DataFrame) -> pd.DataFrame:
+    return input.assign(
+        total_vaccinations=input.people_vaccinated.fillna(0) + input.people_fully_vaccinated.fillna(0)
+    )
+
+
+def enrich_vaccine(input: pd.DataFrame) -> pd.DataFrame:
+    def _enrich_vaccine(date: str) -> str:
+        if date >= "2021-01-13":
+            return "Moderna, Pfizer/BioNTech"
+        return "Pfizer/BioNTech"
+    return input.assign(vaccine=input.date.astype(str).apply(_enrich_vaccine))
+
+
+def enrich_metadata(input: pd.DataFrame) -> pd.DataFrame:
+    return input.assign(
+        location="Denmark",
+        source_url="https://covid19.ssi.dk/overvagningsdata/vaccinationstilslutning"
+    )
+
+
+def pipeline(input: pd.DataFrame, colname: str) -> pd.DataFrame:
+    return (
+        input
+        .pipe(rename_columns, colname)
+        .pipe(format_date)
+        .pipe(aggregate)
+    )
+
+
+def post_process(input: pd.DataFrame) -> pd.DataFrame:
+    return (
+        input
+        .pipe(enrich_vaccinations)
+        .pipe(enrich_vaccine)
+        .pipe(enrich_metadata)
+    )
 
 
 def main():
-    url = "https://covid19.ssi.dk/overvagningsdata/vaccinationstilslutning"
+    source_dose1 = "https://services5.arcgis.com/Hx7l9qUpAnKPyvNz/ArcGIS/rest/services/Vaccine_REG_linelist_gdb/FeatureServer/19/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=first_vaccinedate%2Cantal_foerste_vacc&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pjson&token="
+    source_dose2 = "https://services5.arcgis.com/Hx7l9qUpAnKPyvNz/ArcGIS/rest/services/Vaccine_REG_linelist_gdb/FeatureServer/20/query?where=1%3D1&objectIds=&time=&resultType=none&outFields=second_vaccinedate%2Cantal_faerdig_vacc&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&sqlFormat=none&f=pjson&token="
+    destination = "automations/output/Denmark.csv"
 
-    # Locate newest pdf
-    html_page = urllib.request.urlopen(url)
-    soup = BeautifulSoup(html_page, "html.parser")
-    pdf_path = soup.find('a', text="Download her").get("href")  # Get path to newest pdf
+    dose1 = read(source_dose1).pipe(pipeline, colname="people_vaccinated")
+    dose2 = read(source_dose2).pipe(pipeline, colname="people_fully_vaccinated")
 
-    # Fetch data
-    column_string = {'dtype': str , 'header': None}  # Force dtype to be object because of thousand separator in Europe
-    kwargs = {'pandas_options': column_string,}
-    dfs_from_pdf = tabula.read_pdf(pdf_path, pages="all", **kwargs)
-    for tbl in dfs_from_pdf:
-        if "Vaccinationsdato" in tbl[0].values:
-            df = pd.DataFrame(tbl)
-            break
-    header = (
-        df[0:3]
-        .astype(str)
-        .apply(lambda x: x.replace("nan", ""))
-        .apply(' '.join)
-        .apply(lambda x: x.strip())
-        .replace(r"\s", " ", regex=True)
+    (
+        pd.merge(dose1, dose2, how="outer", on="date")
+        .pipe(post_process)
+        .to_csv(destination, index=False)
     )
-    df.columns = header
-    df = df.drop([0,1,2])
-    
-    # Manipulate data
-    df["date"] = pd.to_datetime(df["Vaccinationsdato"], format="%d-%m-%Y")
-    df["people_vaccinated"] = (
-        df["Antal personer som har påbegyndt vaccination"]
-        .apply(lambda x: x.replace(".", ""))
-        .astype(int)
-    )
-    df["people_fully_vaccinated"] = (
-        df["Antal personer som er færdigvaccineret"]
-        .apply(lambda x: x.replace(".", "").replace("-", "0"))
-        .astype(int)
-    )
-    df["total_vaccinations"] = df["people_vaccinated"] + df["people_fully_vaccinated"]
-    df["people_fully_vaccinated"] = df["people_fully_vaccinated"].replace(0, pd.NA)
-
-    df = df[["date", "people_vaccinated", "people_fully_vaccinated", "total_vaccinations"]]
-    
-    df.loc[:, "location"] = "Denmark"
-    df.loc[:, "source_url"] = pdf_path
-
-    df.loc[:, "vaccine"] = "Pfizer/BioNTech"
-    df.loc[df.date >= "2021-01-13", "vaccine"] = "Moderna, Pfizer/BioNTech"
-
-    df.to_csv("automations/output/Denmark.csv", index=False)
 
 
 if __name__ == "__main__":

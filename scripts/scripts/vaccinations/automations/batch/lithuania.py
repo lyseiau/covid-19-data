@@ -24,6 +24,24 @@ def main():
 
     df["date"] = pd.to_datetime(df["date"], unit="ms")
 
+    # Data by vaccine
+    vaccine_mapping = {
+        "Pfizer-BioNTech": "Pfizer/BioNTech",
+        "Moderna": "Moderna",
+        "AstraZeneca": "Oxford/AstraZeneca",
+    }
+    assert set(df["vaccine_name"].unique()) == set(vaccine_mapping.keys())
+    df = df.replace(vaccine_mapping)
+    vax = (
+        df.groupby(["date", "vaccine_name"], as_index=False)
+        ["vaccinated"].sum()
+        .sort_values("date")
+        .rename(columns={"vaccine_name": "vaccine", "vaccinated": "total_vaccinations"})
+    )
+    vax["total_vaccinations"] = vax.groupby("vaccine", as_index=False)["total_vaccinations"].cumsum()
+    vax["location"] = "Lithuania"
+    vax.to_csv("automations/output/by_manufacturer/Lithuania.csv", index=False)
+
     df = (
         df
         .groupby(["date", "dose_number"], as_index=False)
@@ -45,6 +63,7 @@ def main():
 
     df.loc[:, "vaccine"] = "Pfizer/BioNTech"
     df.loc[df["date"] >= "2021-01-13", "vaccine"] = "Moderna, Pfizer/BioNTech"
+    df.loc[df["date"] >= "2021-02-07", "vaccine"] = "Moderna, Oxford/AstraZeneca, Pfizer/BioNTech"
 
     df.to_csv("automations/output/Lithuania.csv", index=False)
 

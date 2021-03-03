@@ -9,7 +9,7 @@ def import_iza():
     # Previous data is collected from the repo maintained by IZA:
     # https://github.com/Institut-Zdravotnych-Analyz/covid19-data
     iza = pd.read_csv(
-        "https://raw.githubusercontent.com/Institut-Zdravotnych-Analyz/covid19-data/main/OpenData_Slovakia_Vaccination_Regions.csv",
+        "https://github.com/Institut-Zdravotnych-Analyz/covid19-data/raw/main/Vaccination/OpenData_Slovakia_Vaccination_Regions.csv",
         usecols=["Date", "first_dose", "second_dose"],
         sep=";"
     )
@@ -29,7 +29,7 @@ def import_iza():
     iza["people_fully_vaccinated"] = iza["people_fully_vaccinated"].cumsum()
     iza["total_vaccinations"] = iza["people_vaccinated"] + iza["people_fully_vaccinated"]
     iza["people_fully_vaccinated"] = iza["people_fully_vaccinated"].replace(0, pd.NA)
-    iza["source_url"] = "https://github.com/Institut-Zdravotnych-Analyz/covid19-data/blob/main/OpenData_Slovakia_Vaccination_Regions.csv"
+    iza["source_url"] = "https://github.com/Institut-Zdravotnych-Analyz/covid19-data"
 
     return iza
 
@@ -41,8 +41,10 @@ def import_dashboard():
 
     df = pd.DataFrame.from_records(data["tiles"]["k31"]["data"]["d"])
     df = df[["d", "v", "v1"]].rename(columns={
-        "d": "date", "v": "people_vaccinated", "v1": "people_fully_vaccinated"
+        "d": "date", "v": "first_dose_only", "v1": "people_fully_vaccinated"
     })
+    df["people_vaccinated"] = df["first_dose_only"] + df["people_fully_vaccinated"]
+    df = df.drop(columns=["first_dose_only"])
     df["date"] = pd.to_datetime(df["date"], format="%y%m%d").dt.date.astype(str)
     df["total_vaccinations"] = df["people_vaccinated"] + df["people_fully_vaccinated"]
     df["source_url"] = "https://covid-19.nczisk.sk"
@@ -55,7 +57,7 @@ def main():
     iza = import_iza()
     dashboard = import_dashboard()
 
-    iza = iza[iza["date"] < dashboard["date"].min()]
+    dashboard = dashboard[dashboard["date"] > iza["date"].max()]
     df = pd.concat([iza, dashboard]).sort_values("date")
 
     df.loc[:, "location"] = "Slovakia"
